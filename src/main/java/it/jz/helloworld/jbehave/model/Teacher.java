@@ -5,14 +5,14 @@ import java.util.Set;
 
 public class Teacher {
 
-	public String name;
-	public Set<Student> students = new HashSet<>();
-	
-	public Teacher (String name) {
-		this.name = name;
-	}
+    public String name;
+    public Set<Student> students = new HashSet<>();
 
-	public Student find(String name) {
-		return students.stream().filter(item -> item.name.equals(name)).findFirst().get();
-	}
+    public Teacher(String name) {
+        this.name = name;
+    }
+
+    public Student find(String name) {
+        return students.stream().filter(item -> item.name.equals(name)).findFirst().get();
+    }
 }
