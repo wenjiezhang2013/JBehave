@@ -21,6 +21,10 @@ public class Teacher {
         return students.stream().filter(item -> item.name.equals(name)).findFirst().get();
     }
     
+    public void join(String studentName) {
+        students.add(new Student(studentName, this));
+    }
+    
     public List<Object> getListFromExternalService(){
         return serviceClient.getList();
     }

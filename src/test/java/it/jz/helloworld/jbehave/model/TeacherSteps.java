@@ -1,16 +1,21 @@
 package it.jz.helloworld.jbehave.model;
 
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.UsingSteps;
 import org.jbehave.core.annotations.When;
+import org.jbehave.core.model.ExamplesTable;
+import org.mockito.Mockito;
 
 import it.jz.helloworld.jbehave.service.RemoteClientService;
 
@@ -18,12 +23,14 @@ import it.jz.helloworld.jbehave.service.RemoteClientService;
 public class TeacherSteps {
 
     private Teacher teacher;
+    
+    private RemoteClientService client;
 
     @Given("a teacher named $teacherName")
     public void init(String teacherName) {
         teacher = new Teacher(teacherName);
         
-        RemoteClientService client = mock(RemoteClientService.class);
+        client = Mockito.mock(RemoteClientService.class);
 
         List<Object> list = new ArrayList<>();
         
@@ -54,6 +61,19 @@ public class TeacherSteps {
             return;
         }
         assertTrue("This line should not be executed.", false);
+    }
+    
+    @When("he has students: $studentsTable")
+    public void hasStudents(ExamplesTable studentsTable){
+        for (Map<String,String> row : studentsTable.getRows()) {
+            String studentName = row.get("name");
+            teacher.join(studentName);
+        }
+    }
+    
+    @Then("I should be able to find $studentName")
+    public void findStudent(String studentName){
+        assertTrue(teacher.find(studentName) != null);
     }
 
 }
